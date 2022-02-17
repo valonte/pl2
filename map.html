@@ -1,10 +1,17 @@
 <!DOCTYPE html>
+<!-- 
+Created by Vince Ruel Alonte
+For GEOM 99
+Complete 2 Turotials for JavaScript API (Week 4 Checklist)
+-->
 <html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  
   <title>Valentine's Map</title>
+  
   <style>
     html, body, #viewDiv {
       padding: 0;
@@ -12,10 +19,33 @@
       height: 100%;
       width: 100%;
     }
+
+    #tcenter{
+        position: absolute;
+        width: 100%;
+        margin: 0;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        z-index: 5;
+        background-color: rgba(230, 166, 190, 0.8);
+        top: 10%;
+        text-align: center;
+        font-family: "Brush Script MT", "cursive";
+        color: rgb(255,38,68);
+      }
   </style>
+
   <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.22/"></script>
   <script>
+//   The template I used here was the Add a Point, Line, and Polygon Tutorial:
+//      https://developers.arcgis.com/javascript/latest/add-a-point-line-and-polygon/
+
+//   My idea is just to create a simple map with a heart lake as a clickable polygon
+//   Heart Lake as my valentine theme was inspired by an instagram story by ESRI Canada.
+//   The poem included in the popup was from this website:
+//      https://www.poemhunter.com/poem/love-lake/
+
 
   require([
     "esri/config",
@@ -25,66 +55,33 @@
     "esri/Graphic",
     "esri/layers/GraphicsLayer"
 
+    
+
     ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
 
   esriConfig.apiKey = "AAPKd7b24c9bf1ad422a8e9aba2e1a1a5dcecQjuvPSLm-9TXho7-ldNYUJkOIP_C0EpDoiIl8gmjv4LOynXIMIxqtihvXFXzDjE";
 
+
+//   Change the basemap to a map that complements my theme
+//      https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap
   const map = new Map({
     basemap: "arcgis-colored-pencil" //Basemap layer service
   });
 
+//   Center in the map at Heart Lake
   const view = new MapView({
     map: map,
     center: [-79.79539632797241,43.740483787922024], //Longitude, latitude
-    zoom: 16,
+    zoom: 15,
     container: "viewDiv"
  });
 
  const graphicsLayer = new GraphicsLayer();
  map.add(graphicsLayer);
 
- const point = { //Create a point
-    type: "point",
-    longitude: -118.80657463861,
-    latitude: 34.0005930608889
- };
- const simpleMarkerSymbol = {
-    type: "simple-marker",
-    color: [226, 119, 40],  // Orange
-    outline: {
-        color: [255, 255, 255], // White
-        width: 1
-    }
- };
 
- const pointGraphic = new Graphic({
-    geometry: point,
-    symbol: simpleMarkerSymbol
- });
- graphicsLayer.add(pointGraphic);
-
-    // Create a line geometry
- const polyline = {
-    type: "polyline",
-    paths: [
-        [-118.821527826096, 34.0139576938577], //Longitude, latitude
-        [-118.814893761649, 34.0080602407843], //Longitude, latitude
-        [-118.808878330345, 34.0016642996246]  //Longitude, latitude
-    ]
- };
- const simpleLineSymbol = {
-    type: "simple-line",
-    color: [226, 119, 40], // Orange
-    width: 2
- };
-
- const polylineGraphic = new Graphic({
-    geometry: polyline,
-    symbol: simpleLineSymbol
- });
- graphicsLayer.add(polylineGraphic);
-
- // Create a polygon geometry
+ // Create a polygon geometry for Heart Lake
+ // The polygon was first created in geojson.io/
  const polygon = {
     type: "polygon",
     rings: [
@@ -171,12 +168,13 @@
     ]
  };
 
+ // Simple Pink and Red style for my Heart Polygon
  const simpleFillSymbol = {
     type: "simple-fill",
-    color: [230, 166, 190, 0.8],  // Orange, opacity 80%
+    color: [230, 166, 190, 0.8],
     outline: {
-        color: [255, 255, 255],
-        width: 1
+        color: [255,38,68],
+        width: 2
     }
  };
 
@@ -184,9 +182,11 @@
     title: "{Name}",
     content: "{Description}"
  }
+
+ //Popup for the Poem
  const attributes = {
-    Name: "Graphic",
-    Description: "I am a polygon"
+    Name: "Lake Love by Joshua Adeyemi",
+    Description: 'Hands reached into<br>the heart of the lake;<br>then I fall into-<br>reaching out for a take.'
  }
 
  const polygonGraphic = new Graphic({
@@ -203,6 +203,9 @@
 </script>
 </head>
 <body>
-  <div id="viewDiv"></div>
+    <!-- Simple title for the page -->
+    <h1 id=tcenter>Heart Lake, Brampton, ON</h1>
+    <div id="viewDiv"></div>
+
 </body>
 </html>
